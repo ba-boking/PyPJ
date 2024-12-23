@@ -12,7 +12,8 @@ sol = {
 
 @app.get("/")
 def root():
-    return {"message": "Busan 고령화 서비스"}
+    return {"message": "부산 고령화 서비스"}
+
 
 @app.get("/age/{gu}", response_class=HTMLResponse)
 def age(gu: str):
@@ -25,21 +26,26 @@ def age(gu: str):
     
     if gu in data:
         a = data[gu]
-        if a < 15:
+        
+        if a < 60:
             soln = sol["low"]
-        elif a < 30:
+            color = "green"
+        elif a < 80:
             soln = sol["medium"]
+            color = "yellow"
         else:
             soln = sol["high"]
+            color = "red"
         
         return f"""
         <html>
             <head><title>{gu} 고령화 대응</title></head>
-            <body>
+            <body style="background-color: {color};">
                 <h1>{gu} 고령화 해결책</h1>
-                <p>고령화 수준: {a}세</p>
+                <p>고령화 수준: {a}%</p>
                 <p>해결책: {soln}</p>
             </body>
         </html>
         """
+    
     return f"<html><body><h1>{gu} 데이터 없음</h1></body></html>"
